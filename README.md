@@ -16,4 +16,4 @@ A simple interactive website that teaches e-waste recycling using AI-generated q
 - Backend: Node.js + Express  
 - AI: Google Gemini 2.5 Flash API  
 
-## 📁 Project Structure
+

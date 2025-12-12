@@ -1,0 +1,3 @@
+body { font-family: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial; }
+#options .list-group-item { cursor: pointer; }
+#options .list-group-item:hover { background: #f8f9fa; }

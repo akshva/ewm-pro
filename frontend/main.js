@@ -21,28 +21,42 @@ async function newQuestion() {
   document.getElementById('options').innerHTML = '';
   document.getElementById('feedback').innerHTML = '';
 
-  const resp = await fetch(`${API_ROOT}/generate-quiz`, {
-    method: 'POST',
-    headers: {'Content-Type': 'application/json'},
-    body: JSON.stringify({ topic: 'e-waste recycling' })
-  });
-  const json = await resp.json();
-  if (!json.ok) {
-    document.getElementById('questionText').innerText = 'Failed to get question';
-    return;
+  try {
+    const resp = await fetch(`${API_ROOT}/generate-quiz`, {
+      method: 'POST',
+      headers: {'Content-Type': 'application/json'},
+      body: JSON.stringify({ topic: 'e-waste recycling' })
+    });
+    
+    const json = await resp.json();
+    
+    if (!resp.ok) {
+      const errorMsg = json.error || `HTTP error! status: ${resp.status}`;
+      throw new Error(errorMsg);
+    }
+    if (!json.ok) {
+      const errorMsg = json.error || 'Unknown error';
+      document.getElementById('questionText').innerText = `Failed to get question: ${errorMsg}`;
+      console.error('Quiz API error:', json);
+      return;
+    }
+    
+    const data = json.data;
+    currentQuestion = data;
+    document.getElementById('questionText').innerText = data.question;
+    const optionsDiv = document.getElementById('options');
+    optionsDiv.innerHTML = '';
+    (data.options || []).forEach((opt, i) => {
+      const li = document.createElement('button');
+      li.className = 'list-group-item list-group-item-action';
+      li.innerText = `${String.fromCharCode(65+i)}. ${opt}`;
+      li.onclick = () => checkAnswer(String.fromCharCode(65+i));
+      optionsDiv.appendChild(li);
+    });
+  } catch (error) {
+    document.getElementById('questionText').innerText = `Failed to get question: ${error.message}`;
+    console.error('Fetch error:', error);
   }
-  const data = json.data;
-  currentQuestion = data;
-  document.getElementById('questionText').innerText = data.question;
-  const optionsDiv = document.getElementById('options');
-  optionsDiv.innerHTML = '';
-  (data.options || []).forEach((opt, i) => {
-    const li = document.createElement('button');
-    li.className = 'list-group-item list-group-item-action';
-    li.innerText = `${String.fromCharCode(65+i)}. ${opt}`;
-    li.onclick = () => checkAnswer(String.fromCharCode(65+i));
-    optionsDiv.appendChild(li);
-  });
 }
 
 function checkAnswer(selected) {

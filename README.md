@@ -16,6 +16,7 @@ A simple interactive website that teaches e-waste recycling using AI-generated q
 - Backend: Node.js + Express  
 - AI: Google Gemini 1.5 Flash API  
 
+<<<<<<< HEAD
 ## 📁 Project Structure
 ```
 ewaste-2/
@@ -84,3 +85,6 @@ ewaste-2/
   - Ensure Node.js is installed: `node --version`
   - Install dependencies: `cd backend && npm install`
   - Check if port 3000 is already in use
+=======
+
+>>>>>>> 074740bc585e117f13ae22d4a10019036710dc1a
